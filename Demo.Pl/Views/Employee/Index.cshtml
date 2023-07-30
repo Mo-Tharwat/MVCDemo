@@ -1,0 +1,79 @@
+﻿@*
+    this line is to say that this View Takes a model with that data type.
+    and the data type is taken from the (IEmployeeRepository) In Demo.BLL project
+
+    Don`t Forget to Add @using Demo.DAL.Models; To the (_ViewImports.cshtml)
+*@
+
+@model IEnumerable<EmployeeViewModel>
+@{
+    ViewData["Title"] = "All Employees";
+}
+
+<partial name="_TempMessage" />
+
+<h1>All Employees</h1>
+<div class="my-5">
+    <a asp-controller="Employee" asp-action="Create" class="btn btn-primary">Create New Employee</a>
+</div>
+
+<div class="row justify-content-center align-item-center mt-3 mb-2">
+    <form asp-action="Index" class="row col-10 offset-1">
+        <div class="col-8">
+            <input type="text" class="form-control" placeholder="Search with Name" name="SearchValue"/>
+        </div>
+        <div class="col-4">
+            <input type="submit" value="Search" class="btn btn-outline-success" />
+        </div>
+    </form>
+</div>
+
+
+@if (Model.Count() > 0)
+{
+    <table class="table table-striped table-borderless table-hover">
+        <thead>
+            <tr>
+                <th>@Html.DisplayNameFor(E=>E.Name)</th>
+                <th>@Html.DisplayNameFor(E=>E.Image)</th>
+                <th>@Html.DisplayNameFor(E=>E.Age)</th>
+                <th>@Html.DisplayNameFor(E=>E.Address)</th>
+                <th>@Html.DisplayNameFor(E=>E.Department)</th>
+                <th>@Html.DisplayNameFor(E=>E.PhoneNumber)</th>
+                <th>@Html.DisplayNameFor(E=>E.IsActive)</th>
+                <th>@Html.DisplayNameFor(E=>E.Email)</th>
+                <th>@Html.DisplayNameFor(E=>E.Salary)</th>
+                <th>@Html.DisplayNameFor(E=>E.HireDate)</th>
+                <th>Details</th>
+                <th>Edit</th>
+                <th>Delete</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var employee in Model)
+            {
+                <tr>
+                    <td>@employee.Name</td>
+                    <td>
+                        <img src="~/files/images/@employee.ImageName" class="img-fluid rounded-circle" alt="Employee Image" width="50px" height="50px"/>
+                    </td>
+                    <td>@employee.Age</td>
+                    <td>@employee.Address</td>
+                    <td>@Html.DisplayFor( M=> employee.Department.Name)</td>
+                    <td>@employee.PhoneNumber</td>
+                    <td>@Html.DisplayFor( M=> employee.IsActive)</td>
+                    <td>@Html.DisplayFor( M=> employee.Email)</td>
+                    <td>@Html.DisplayFor( M=> employee.Salary)</td>
+                    <td>@employee.HireDate</td>
+                    <partial name="_ButtonsPartialView" model="@employee.Id" />
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <div class="alert alert-warning">
+        <h3>There are no Employees!!</h3>
+    </div>
+}
